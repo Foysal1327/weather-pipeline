@@ -1,0 +1,12 @@
+A few things worth remembering:
+
+./sql:/docker-entrypoint-initdb.d — Postgres's official image auto-executes any .sql files in this folder, but only the very first time the container initializes its data volume. If you change raw_schema.sql later, it won't re-run automatically — you'd need to drop the volume (docker compose down -v) or apply changes manually. Fine for now, worth remembering later.
+pgdata named volume — keeps your data across docker compose stop/start. It only gets wiped if you explicitly run down -v.
+healthcheck — matters once Airflow depends on this container in Phase 4; it needs to know Postgres is actually ready, not just started.
+
+Key notes here, worth understanding:
+
+ON CONFLICT ... DO UPDATE (upsert) matches the UNIQUE constraints you already defined in raw_schema.sql. 
+Re-running extract_current.py five times a day won't create duplicate rows — it'll just refresh the same row if the city/timestamp combo repeats. 
+This is what makes extraction idempotent — a core ETL property, especially once Airflow retries failed tasks and might re-run the same extraction twice.
+execute_values batches the whole list into a single INSERT statement rather than one round-trip per row — much faster for 500+ records.
