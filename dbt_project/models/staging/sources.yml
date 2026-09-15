@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Raw landing tables loaded directly by Python extraction scripts, no transformation applied."
+    tables:
+      - name: current_conditions
+        description: "Current weather conditions per city, upserted on each extraction run."
+        loaded_at_field: extracted_at
+        columns:
+          - name: city_id
+            tests:
+              - not_null
+          - name: observed_at
+            tests:
+              - not_null
+
+      - name: hourly_forecast
+        description: "Hourly forecast predictions per city. Same forecast_for hour appears multiple times with different fetched_at, representing different lead times."
+        loaded_at_field: fetched_at
+        columns:
+          - name: city_id
+            tests:
+              - not_null
+          - name: forecast_for
+            tests:
+              - not_null
+
+      - name: historical
+        description: "Historical actuals per city, from Open-Meteo's archive API."
+        loaded_at_field: fetched_at
+        columns:
+          - name: city_id
+            tests:
+              - not_null
+          - name: observed_at
+            tests:
+              - not_null
