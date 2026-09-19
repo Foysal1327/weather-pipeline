@@ -12,7 +12,7 @@ clean-targets:
 seeds:
   # Builds seeds into '<your_schema_name>_raw'
   weather_pipeline:
-    +schema: raw
+    +schema: seed_data
 
 models:
   weather_pipeline:
