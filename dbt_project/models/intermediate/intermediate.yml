@@ -18,3 +18,14 @@ models:
       - name: lead_time_hours
         tests:
           - not_null
+  - name: int_historical_utc
+    description: >
+      Historical actuals with UTC-normalized observed_at timestamp,
+      used as the "ground truth" side of the forecast-accuracy comparison.
+    columns:
+      - name: city_id
+        tests:
+          - not_null
+      - name: observed_at_utc
+        tests:
+          - not_null
