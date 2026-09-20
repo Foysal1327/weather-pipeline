@@ -13,11 +13,7 @@ renamed as (
         precipitation_probability    as precipitation_probability_pct,
         precipitation                as precipitation_mm,
         weather_code,
-        wind_speed_10m                as wind_speed_kmh,
-
-        -- lead time: how far ahead of the forecast this prediction was made.
-        -- this is the foundation of the forecast-accuracy-by-lead-time analysis.
-        extract(epoch from (forecast_for - fetched_at)) / 3600.0 as lead_time_hours
+        wind_speed_10m                as wind_speed_kmh
     from source
 )
 

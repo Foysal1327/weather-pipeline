@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: int_hourly_forecast_utc
+    description: >
+      Hourly forecast records with UTC-normalized timestamps and lead time
+      (hours between when the forecast was fetched and the hour it predicts).
+      Negative lead_time_hours are expected and represent past/current hours
+      Open-Meteo includes alongside genuine future predictions — these should
+      be filtered out in downstream marts used for forecast-accuracy analysis.
+    columns:
+      - name: city_id
+        tests:
+          - not_null
+      - name: forecast_for_utc
+        tests:
+          - not_null
+      - name: lead_time_hours
+        tests:
+          - not_null
