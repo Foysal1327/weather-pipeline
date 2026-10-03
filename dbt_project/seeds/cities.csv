@@ -1,0 +1,7 @@
+city_id,city_name,country,latitude,longitude,timezone
+dhaka,Dhaka,Bangladesh,23.8103,90.4125,Asia/Dhaka
+tokyo,Tokyo,Japan,35.6762,139.6503,Asia/Tokyo
+bangkok,Bangkok,Thailand,13.7563,100.5018,Asia/Bangkok
+sydney,Sydney,Australia,-33.8688,151.2093,Australia/Sydney
+new_york,New York,USA,40.7128,-74.006,America/New_York
+medina,Medina,Saudi Arabia,24.5247,39.5692,Asia/Riyadh
