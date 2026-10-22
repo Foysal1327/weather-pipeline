@@ -37,3 +37,10 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: [city_key, datetime_key, fetched_at]
+
+  - name: agg_forecast_accuracy_by_lead_time
+    description: "Forecast error metrics per city and lead-time hour. Source table for the Superset accuracy dashboard."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [city_name, lead_time_hour_bucket]
