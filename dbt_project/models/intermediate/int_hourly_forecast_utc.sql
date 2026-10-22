@@ -2,6 +2,10 @@ with stg as (
     select * from {{ ref('stg_hourly_forecast') }}
 ),
 
+cities as (
+    select city_id, timezone as city_timezone from {{ ref('cities') }}
+),
+
 utc_normalized as (
     select
         city_id,
@@ -28,6 +32,7 @@ with_lead_time as (
         *,
         extract(epoch from (forecast_for_utc - fetched_at)) / 3600.0 as lead_time_hours
     from utc_normalized
+    where (forecast_for_utc at time zone (select city_timezone from cities where cities.city_id = utc_normalized.city_id)) = forecast_for
 )
 
 select * from with_lead_time

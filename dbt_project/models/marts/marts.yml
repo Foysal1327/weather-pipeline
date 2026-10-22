@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: dim_city
+    columns:
+      - name: city_key
+        data_tests: [unique, not_null]
+
+  - name: dim_datetime
+    columns:
+      - name: datetime_key
+        data_tests: [unique, not_null]
+
+  - name: fact_historical_actuals
+    columns:
+      - name: city_key
+        data_tests: [not_null]
+      - name: datetime_key
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [city_key, datetime_key]
+
+  - name: fact_forecast
+    columns:
+      - name: lead_time_hours
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [city_key, datetime_key, fetched_at]
+
+  - name: fact_forecast_accuracy
+    description: "One row per prediction that has a matching actual, with error metrics by lead time."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [city_key, datetime_key, fetched_at]
