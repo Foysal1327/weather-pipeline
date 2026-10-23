@@ -27,3 +27,9 @@ stories from phase 3:
 The dbt 2.0 vs Postgres incompatibility, solved by pinning versions
 The DST bug: the grain test caught it, and fixing it meant converting with timezone names instead of a per-response offset
 Known limitation: New York’s fall-back hour on Nov 1 may produce a duplicate local hour in the raw upsert
+
+phase 4:
+Airflow 3 differs from the 2.x tutorials: a different service layout and different imports.
+Running dbt in an isolated virtualenv inside the Airflow image avoids dependency conflicts.
+Two compose stacks were joined with a shared Docker network.
+A service-name alias clash was avoided by renaming a service.

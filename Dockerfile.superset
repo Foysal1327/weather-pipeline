@@ -1,0 +1,6 @@
+FROM apache/superset:6.1.0
+
+USER root
+# Install into Superset's own virtualenv. A plain `pip install` would land in the system Python.
+RUN uv pip install --no-cache-dir --python /app/.venv/bin/python psycopg2-binary
+USER superset

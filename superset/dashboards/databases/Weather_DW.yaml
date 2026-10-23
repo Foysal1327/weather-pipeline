@@ -1,0 +1,15 @@
+database_name: Weather DW
+sqlalchemy_uri: postgresql+psycopg2://superset_ro:XXXXXXXXXX@weather_postgres:5432/weather_db
+cache_timeout: null
+expose_in_sqllab: true
+allow_run_async: false
+allow_ctas: false
+allow_cvas: false
+allow_dml: false
+allow_file_upload: false
+extra:
+  allows_virtual_table_explore: true
+impersonate_user: false
+configuration_method: dynamic_form
+uuid: 9d775415-3a5f-4a27-b57e-deee7aa99183
+version: 1.0.0

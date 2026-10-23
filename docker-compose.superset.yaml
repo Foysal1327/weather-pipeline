@@ -1,0 +1,61 @@
+name: weather-superset
+
+x-superset-common: &superset-common
+  build:
+    context: .
+    dockerfile: Dockerfile.superset
+  image: weather-superset:local
+  env_file:
+    - .env.superset
+  volumes:
+    - ./superset_config.py:/app/pythonpath/superset_config.py:ro
+
+services:
+  superset-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: superset
+      POSTGRES_PASSWORD: superset
+      POSTGRES_DB: superset
+    volumes:
+      - superset-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "superset"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  superset-init:
+    <<: *superset-common
+    depends_on:
+      superset-db:
+        condition: service_healthy
+    command:
+      - bash
+      - -c
+      - |
+        set -e
+        superset db upgrade
+        superset fab create-admin --username admin --firstname Admin --lastname User --email admin@example.com --password admin || true
+        superset init
+    restart: "no"
+
+  superset:
+    <<: *superset-common
+    ports:
+      - "127.0.0.1:8088:8088"
+    depends_on:
+      superset-init:
+        condition: service_completed_successfully
+    networks:
+      - default
+      - weather_net
+    restart: unless-stopped
+
+volumes:
+  superset-db-data:
+
+networks:
+  weather_net:
+    external: true
