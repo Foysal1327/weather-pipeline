@@ -30,7 +30,10 @@ def _bulk_upsert(table: str, records: list[dict], conflict_cols: list[str]) -> N
     if not records:
         print(f"No records to write to {table}")
         return
-
+    
+    # keep one record per conflict key: Postgres rejects an upsert that hits the same row twice
+    records = list({tuple(r[c] for c in conflict_cols): r for r in records}.values())
+    
     columns = list(records[0].keys())
     values = [[r[col] for col in columns] for r in records]
 

@@ -21,3 +21,9 @@ Phase 2:
 - Applied the raw schema via Postgres's auto-init mechanism
 - Replaced the placeholder JSONL storage layer with real psycopg2 upserts — without touching any extraction script, because the storage interface was designed up front to be swappable
 - Idempotent loads via ON CONFLICT DO UPDATE, matched to unique constraints defined in the schema — a prerequisite for safe retries once Airflow enters the picture
+
+stories from phase 3:
+
+The dbt 2.0 vs Postgres incompatibility, solved by pinning versions
+The DST bug: the grain test caught it, and fixing it meant converting with timezone names instead of a per-response offset
+Known limitation: New York’s fall-back hour on Nov 1 may produce a duplicate local hour in the raw upsert
